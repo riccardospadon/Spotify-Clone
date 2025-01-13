@@ -8,14 +8,14 @@ html {
 section {
     display: flex;
     color: whitesmoke;
-    height: 80%;
 }
 
 .menu-playlist {
     background-color: black;
     color: rgb(168, 168, 168);
     padding: 2rem;
-
+    border-radius: 40px 40px 0 0;
+    overflow-y: auto;
 }
 
 .menu {
@@ -39,7 +39,7 @@ section {
 ul > li {
     list-style-type: none;
     cursor: pointer;
-    height: fit-content;
+    margin-top: 1rem;
 }
 
 ul > li:hover {
@@ -48,4 +48,5 @@ ul > li:hover {
 
 #albums-songs-artists {
     margin-left: 5rem;
+    margin-top: 2rem;
 }
