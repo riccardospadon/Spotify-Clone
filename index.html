@@ -15,12 +15,12 @@
       <div class="container-fluid px-5 menu-playlist">  <!-- div per la parte sinistra -->
         <div class="menu">
           <div><i class="bi bi-three-dots"></i></div>
-          <div><i class="bi bi-house-door-fill"></i>Home</div>
-          <div><i class="bi bi-collection-fill"></i>La tua libreria</div>
+          <div><i class="bi bi-house-door-fill"></i>  Home</div>
+          <div><i class="bi bi-collection-fill"></i> La tua libreria</div>
           <br />
           <div><i class="bi bi-plus-square-fill"></i> Crea playlist</div>
-          <div><i class="bi bi-heart-fill"></i> Brani che ti piacciono</div>
-          <div><i class="bi bi-bookmark-fill"></i> I tuoi episodi</div>
+          <div><i class="bi bi-heart-fill"></i>  Brani che ti piacciono</div>
+          <div><i class="bi bi-bookmark-fill"></i>  I tuoi episodi</div>
         </div>
         <br />
         <div class="line"></div>
@@ -49,25 +49,19 @@
           </ul>
         </div>
       </div>
-      <div id="albums"> <!-- div per la parte centrale -->
+      <div id="albums-songs-artists"> <!-- div per la parte centrale -->
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Che musica vuoi ascoltare oggi?" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <input type="text" class="form-control" placeholder="Che musica vuoi ascoltare oggi?" id="searchInput" onkeyup="searchArtist()">
           <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
         </div>
         <h1>La tua musica preferita</h1>
-        <div class="album"> <!-- div per ogni album, gestito tramite il file .js! -->
-          <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5>Titolo album</h5>
-              <p class="card-text">Anno album · Artista</p>
-            </div>
+        <div class="album-song-artist"> <!-- div per ogni album, gestito tramite il file .js! -->
+
           </div>
         </div>          
       </div>   
-      <div></div>   <!-- div per la parte destra -->
     </section>
-    <section>
+    <footer>
       <!-- parte bassa della pagina, dove ci sono i controller della musica -->
       <div></div>
       <!-- info del brano in corso -->
@@ -75,7 +69,7 @@
       <!-- controller della musica -->
       <div></div>
       <!-- controller del volume -->
-    </section>
+    </footer>
   </body>
 
   <script

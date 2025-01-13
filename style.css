@@ -1,17 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Changa:wght@400;600&family=Fragment+Mono:ital@0;1&family=Montserrat:wght@600&display=swap");
+
+html {
+    font-family:"Montserrat", sans-serif;
+    background-color: rgb(56, 56, 56);
+}
+
 section {
     display: flex;
-    background-color: rgb(56, 56, 56);
     color: whitesmoke;
+    height: 80%;
 }
 
 .menu-playlist {
     background-color: black;
     color: rgb(168, 168, 168);
-    /* padding: 2rem; */
+    padding: 2rem;
+
 }
 
 .menu {
     flex-direction: column;
+}
+
+.menu > div {
+    margin: 1rem 0;
+    cursor: pointer;
+    font-size: 20px
+}
+
+.menu > div:hover {
+    color: whitesmoke;
 }
 
 .line {
@@ -20,4 +38,14 @@ section {
 
 ul > li {
     list-style-type: none;
+    cursor: pointer;
+    height: fit-content;
+}
+
+ul > li:hover {
+    color: whitesmoke;
+}
+
+#albums-songs-artists {
+    margin-left: 5rem;
 }
