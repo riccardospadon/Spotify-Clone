@@ -35,7 +35,7 @@ const createSongCard = (song) => {
         <img src="${song.album.cover_medium}" class="card-img-top rounded-circle" alt="${song.title}">
         <div class="card-body text-center">
             <h1 class="card-title">${song.title}</h1>
-            <p class="card-text">${song.type} · <a href="../artist/artist.html?id=${artist.id}">${song.artist.name}</p>
+            <p class="card-text">${song.type} · <a href="../artist/artist.html?id=${song.artist.id}">${song.artist.name}</p>
         </div>
       </div>
     `;
@@ -43,40 +43,101 @@ const createSongCard = (song) => {
 
 // card album
 const createAlbumCard = (album) => {
-    const releaseYear = album.release_date ? album.release_date.split("-")[0] : "N/A";
-    return /*html*/ `
+  const releaseYear = album.release_date
+    ? album.release_date.split("-")[0]
+    : "N/A";
+  return /*html*/ `
       <div class="card col-md-2 p-3 align-items-center" id="album-card">
         <img src="${album.cover_medium}" class="card-img-top rounded-circle" alt="${album.title}">
         <div class="card-body text-center">
             <a href="../album/album.html?id=${album.id}"><h1 class="card-title">${album.title}</h1></a>
-            <p class="card-text">${releaseYear} · <a href="../artist/artist.html?id=${artist.id}">${album.artist.name}</a></p>
+            <p class="card-text">${releaseYear} · <a href="../artist/artist.html?id=${album.artist.id}">${album.artist.name}</a></p>
         </div>
       </div>
     `;
-}
+};
 
 const displayResult = (result, contenuto) => {
-  const songs = result.data;
+  const items = result.data;
   contenuto.innerHTML = "";
 
-  songs.forEach((song) => {
+  items.forEach((item) => {
     if (item.type === "artist") {
-      contenuto.innerHTML += createArtistCard(item.artist);
+      contenuto.innerHTML += createArtistCard(item);
     } else if (item.type === "track") {
       contenuto.innerHTML += createSongCard(item);
     } else if (item.type === "album") {
-      contenuto.innerHTML += createAlbumCard(item.album);
+      contenuto.innerHTML += createAlbumCard(item);
     }
   });
 };
 
 const searchContent = async () => {
-  const query = searchInput.value.trim();
-  if (query.length > 0) {
-    const result = await getResult(query);
-    contenuto.innerHTML = "";
-    displayResult(result, contenuto);
-  } else {
-    contenuto.innerHTML = "<h1> Inserisci un termine di ricerca </h1>";
+  const query = searchInput.value.trim().toLowerCase();
+  if (!query) return;
+
+  const result = await getResult(query);
+  contenuto.innerHTML = "";
+  const { data } = result;
+
+  let topResult = null;
+  let artists = [];
+  let tracks = [];
+  let albums = [];
+
+  //top result
+  data.forEach((item) => {
+    if (item.type === "artist") {
+      artists.push(item);
+      if (!topResult && item.name.toLowerCase() === query) {
+        topResult = { type: "artist", item };
+      }
+    } else if (item.type === "album") {
+      albums.push(item);
+      if (!topResult && item.title.toLowerCase() === query) {
+        topResult = { type: "album", item };
+      }
+    } else if (item.type === "track") {
+      tracks.push(item);
+      if (!topResult && item.title.toLowerCase() === query) {
+        topResult = { type: "track", item };
+      }
+    }
+  });
+
+
+  // mostra il match esatto se esiste
+  if (topResult) {
+    if (topResult.type === "artist") {
+      contenuto.innerHTML += createArtistCard(topResult.item);
+    } else if (topResult.type === "album") {
+      contenuto.innerHTML += createAlbumCard(topResult.item);
+    } else if (topResult.type === "track") {
+      contenuto.innerHTML += createSongCard(topResult.item);
+    }
+  }
+
+  // mostra gli artisti
+  if(artists.length > 0) {
+    artists.forEach((artist) => {
+      if(topResult && artist.id === topResult.item.id) return; // per evitare duplicati
+      contenuto.innerHTML += createArtistCard(artist);
+    })
+  }
+
+  // mostra gli album 
+  if(albums.length > 0) {
+    albums.forEach((album) => {
+      if(topResult && album.id === topResult.item.id) return; // per evitare duplicati
+      contenuto.innerHTML += createAlbumCard(album);
+    })
+  }
+
+  // mostra le canzoni
+  if(tracks.length > 0) {
+    tracks.forEach((track) => {
+      if(topResult && track.id === topResult.item.id) return; // per evitare duplicati
+      contenuto.innerHTML += createSongCard(track);
+    })
   }
 };
