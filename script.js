@@ -34,7 +34,7 @@ const createSongCard = (song) => {
       <div class="card col-md-2 p-3 align-items-center" id="song-card">
         <img src="${song.album.cover_medium}" class="card-img-top rounded-circle" alt="${song.title}">
         <div class="card-body text-center">
-            <h1 class="card-title">${song.title}</h1>
+            <h3 class="card-title">${song.title}</h3>
             <p class="card-text">${song.type} · <a href="../artist/artist.html?id=${song.artist.id}">${song.artist.name}</p>
         </div>
       </div>
@@ -50,7 +50,7 @@ const createAlbumCard = (album) => {
       <div class="card col-md-2 p-3 align-items-center" id="album-card">
         <img src="${album.cover_medium}" class="card-img-top rounded-circle" alt="${album.title}">
         <div class="card-body text-center">
-            <a href="../album/album.html?id=${album.id}"><h1 class="card-title">${album.title}</h1></a>
+            <a href="../album/album.html?id=${album.id}"><h3 class="card-title">${album.title}</h3></a>
             <p class="card-text">${releaseYear} · <a href="../artist/artist.html?id=${album.artist.id}">${album.artist.name}</a></p>
         </div>
       </div>

@@ -50,3 +50,24 @@ ul > li:hover {
     margin-left: 5rem;
     margin-top: 2rem;
 }
+
+.album-song-artist {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#song-card{
+    margin-inline: 1rem;
+}
+
+#album-card {
+    margin-inline: 1rem;
+}
+
+#artist-card {
+    margin-inline: 1rem;
+}
+
+.card-img-top {
+    border-radius: 50%;
+}
