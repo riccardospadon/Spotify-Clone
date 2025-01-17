@@ -1,81 +1,112 @@
 @import url("https://fonts.googleapis.com/css2?family=Changa:wght@400;600&family=Fragment+Mono:ital@0;1&family=Montserrat:wght@600&display=swap");
 
 html {
-    font-family:"Montserrat", sans-serif;
-    background-color: rgb(0, 0, 0);
+  font-family: "Montserrat", sans-serif;
+  background-color: rgb(0, 0, 0);
 }
 
 section {
-    display: flex;
-    color: whitesmoke;
+  display: flex;
+  color: whitesmoke;
 }
 
 .menu-playlist {
-    background-color: rgb(14, 14, 14);
-    color: rgb(168, 168, 168);
-    padding: 2rem;
-    border-radius: 40px 40px 0 0;
-    overflow-y: auto;
-    width: 500px;
-    min-width: 500px;
-    max-width: 500px;
-    height: 100vh;
-    box-sizing: border-box;
-    position: fixed;
+  background-color: rgb(14, 14, 14);
+  color: rgb(168, 168, 168);
+  padding: 2rem;
+  border-radius: 40px 40px 0 0;
+  overflow-y: auto;
+  width: 500px;
+  min-width: 500px;
+  max-width: 500px;
+  height: 100vh;
+  box-sizing: border-box;
+  position: fixed;
 }
 
 .menu {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .menu > div {
-    margin: 1rem 0;
-    cursor: pointer;
-    font-size: 20px
+  margin: 1rem 0;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .menu > div:hover {
-    color: whitesmoke;
+  color: whitesmoke;
 }
 
 .line {
-    border: 0.3px solid rgb(168, 168, 168);
+  border: 0.3px solid rgb(168, 168, 168);
 }
 
 ul > li {
-    list-style-type: none;
-    cursor: pointer;
-    margin-top: 1rem;
+  list-style-type: none;
+  cursor: pointer;
+  margin-top: 1rem;
 }
 
 ul > li:hover {
-    color: whitesmoke;
+  color: whitesmoke;
 }
 
 #albums-songs-artists {
-    flex: 1;
-    margin-left: 40rem;
-    margin-top: 2rem;
-    overflow: auto;
+  flex: 1;
+  margin-left: 35rem;
+  margin-top: 2rem;
+  overflow: auto;
 }
 
 .album-song-artist {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-#song-card{
-    margin-inline: 1rem;
+#song-card {
+  margin-inline: 2.5rem;
+  margin-bottom: 1rem;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #album-card {
-    margin-inline: 1rem;
+  margin-inline: 2.5rem;
+  margin-bottom: 1rem;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #artist-card {
-    margin-inline: 1rem;
+  margin-inline: 2.5rem;
+  margin-bottom: 1rem;
+  width: 250px;
+}
+
+.card-title, .card-text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+:where(#artist-card , #album-card, #song-card):hover {
+  background-color: rgb(14, 14, 14);
 }
 
 .card-img-top {
-    border-radius: 50%;
+  border-radius: 50%;
 }
