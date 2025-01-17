@@ -2,7 +2,7 @@
 
 html {
     font-family:"Montserrat", sans-serif;
-    background-color: rgb(56, 56, 56);
+    background-color: rgb(0, 0, 0);
 }
 
 section {
@@ -11,11 +11,17 @@ section {
 }
 
 .menu-playlist {
-    background-color: black;
+    background-color: rgb(14, 14, 14);
     color: rgb(168, 168, 168);
     padding: 2rem;
     border-radius: 40px 40px 0 0;
     overflow-y: auto;
+    width: 500px;
+    min-width: 500px;
+    max-width: 500px;
+    height: 100vh;
+    box-sizing: border-box;
+    position: fixed;
 }
 
 .menu {
@@ -47,8 +53,10 @@ ul > li:hover {
 }
 
 #albums-songs-artists {
-    margin-left: 5rem;
+    flex: 1;
+    margin-left: 40rem;
     margin-top: 2rem;
+    overflow: auto;
 }
 
 .album-song-artist {
