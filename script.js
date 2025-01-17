@@ -103,55 +103,93 @@ const searchContent = async () => {
     //     topResult = { type: "track", item };
     //   }
     // }
-    data.forEach((item) => {
-      if (item.type === "artist" && item.name.toLowerCase() === query) {
-          topResult = { type: "artist", item };
-      }
-      if (item.type === "artist") {
+
+    // data.forEach((item) => {
+    //   if (item.type === "artist" && item.name.toLowerCase() === query) {
+    //     topResult = { type: "artist", item };
+    //   }
+    //   if (item.type === "artist") {
+    //     artists.push(item);
+    //   }
+    //   if (item.type === "album") {
+    //     albums.push(item);
+    //   }
+    //   if (item.type === "track") {
+    //     tracks.push(item);
+    //   }
+    // });
+
+    for (const item of data) {
+      switch (item.type) {
+        case "artist":
+          if (item.name.toLowerCase() === query) {
+            topResult = { type: "artist", item };
+          }
           artists.push(item);
-      }
-      if (item.type === "album") {
+          break;
+        case "album":
+          if (item.title.toLowerCase() === query) {
+            topResult = { type: "album", item };
+          }
           albums.push(item);
-      }
-      if (item.type === "track") {
+          break;
+        case "track":
+          if (item.title.toLowerCase() === query) {
+            topResult = { type: "track", item };
+          }
           tracks.push(item);
+          break;
+        default:
+          break;
       }
-  });
+    }
   });
 
+  let htmlContent = "";
 
   // mostra il match esatto se esiste
   if (topResult) {
     if (topResult.type === "artist") {
-      contenuto.innerHTML += createArtistCard(topResult.item);
+      htmlContent += createArtistCard(topResult.item);
     } else if (topResult.type === "album") {
-      contenuto.innerHTML += createAlbumCard(topResult.item);
+      htmlContent += createAlbumCard(topResult.item);
     } else if (topResult.type === "track") {
-      contenuto.innerHTML += createSongCard(topResult.item);
+      htmlContent += createSongCard(topResult.item);
     }
   }
 
   // mostra gli artisti
-  if(artists.length > 0) {
+  if (artists.length > 0) {
     artists.forEach((artist) => {
-      if(topResult && artist.id === topResult.item.id) return; // per evitare duplicati
-      contenuto.innerHTML += createArtistCard(artist);
-    })
+      if (topResult && artist.id === topResult.item.id) return; // per evitare duplicati
+      htmlContent += createArtistCard(artist);
+    });
   }
 
-  // mostra gli album 
-  if(albums.length > 0) {
+  // mostra gli album
+  if (albums.length > 0) {
     albums.forEach((album) => {
-      if(topResult && album.id === topResult.item.id) return; // per evitare duplicati
-      contenuto.innerHTML += createAlbumCard(album);
-    })
+      if (topResult && album.id === topResult.item.id) return; // per evitare duplicati
+      htmlContent += createAlbumCard(album);
+    });
   }
 
   // mostra le canzoni
-  if(tracks.length > 0) {
+  if (tracks.length > 0) {
     tracks.forEach((track) => {
-      if(topResult && track.id === topResult.item.id) return; // per evitare duplicati
-      contenuto.innerHTML += createSongCard(track);
-    })
+      if (topResult && track.id === topResult.item.id) return; // per evitare duplicati
+      htmlContent += createSongCard(track);
+    });
   }
+  contenuto.innerHTML = htmlContent;
 };
+
+// Debounce per evitare chiamate inutili
+let debounceTimeout;
+
+searchInput.addEventListener("keyup", () => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    searchContent();
+  }, 300); // Ritardo di 300ms
+});

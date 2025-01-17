@@ -65,26 +65,23 @@ ul > li:hover {
 }
 
 #song-card {
-  margin-inline: 2.5rem;
+  margin-inline: 1.5rem;
   margin-bottom: 1rem;
+  padding: 1rem;
   width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 #album-card {
-  margin-inline: 2.5rem;
+  margin-inline: 1.5rem;
   margin-bottom: 1rem;
+  padding: 1rem;
   width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 #artist-card {
-  margin-inline: 2.5rem;
+  margin-inline: 1.5rem;
   margin-bottom: 1rem;
+  padding: 1rem;
   width: 250px;
 }
 
