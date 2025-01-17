@@ -87,22 +87,36 @@ const searchContent = async () => {
 
   //top result
   data.forEach((item) => {
-    if (item.type === "artist") {
-      artists.push(item);
-      if (!topResult && item.name.toLowerCase() === query) {
-        topResult = { type: "artist", item };
+    // if (item.type === "artist") {
+    //   artists.push(item);
+    //   if (!topResult && item.name.toLowerCase() === query) {
+    //     topResult = { type: "artist", item };
+    //   }
+    // } else if (item.type === "album") {
+    //   albums.push(item);
+    //   if (!topResult && item.title.toLowerCase() === query) {
+    //     topResult = { type: "album", item };
+    //   }
+    // } else if (item.type === "track") {
+    //   tracks.push(item);
+    //   if (!topResult && item.title.toLowerCase() === query) {
+    //     topResult = { type: "track", item };
+    //   }
+    // }
+    data.forEach((item) => {
+      if (item.type === "artist" && item.name.toLowerCase() === query) {
+          topResult = { type: "artist", item };
       }
-    } else if (item.type === "album") {
-      albums.push(item);
-      if (!topResult && item.title.toLowerCase() === query) {
-        topResult = { type: "album", item };
+      if (item.type === "artist") {
+          artists.push(item);
       }
-    } else if (item.type === "track") {
-      tracks.push(item);
-      if (!topResult && item.title.toLowerCase() === query) {
-        topResult = { type: "track", item };
+      if (item.type === "album") {
+          albums.push(item);
       }
-    }
+      if (item.type === "track") {
+          tracks.push(item);
+      }
+  });
   });
 
 
