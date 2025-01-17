@@ -87,22 +87,22 @@ const searchContent = async () => {
 
   //top result
   data.forEach((item) => {
-    // if (item.type === "artist") {
-    //   artists.push(item);
-    //   if (!topResult && item.name.toLowerCase() === query) {
-    //     topResult = { type: "artist", item };
-    //   }
-    // } else if (item.type === "album") {
-    //   albums.push(item);
-    //   if (!topResult && item.title.toLowerCase() === query) {
-    //     topResult = { type: "album", item };
-    //   }
-    // } else if (item.type === "track") {
-    //   tracks.push(item);
-    //   if (!topResult && item.title.toLowerCase() === query) {
-    //     topResult = { type: "track", item };
-    //   }
-    // }
+    if (item.type === "artist") {
+      artists.push(item);
+      if (!topResult && item.name.toLowerCase().includes(query)) {
+        topResult = { type: "artist", item };
+      }
+    } else if (item.type === "album") {
+      albums.push(item);
+      if (!topResult && item.title.toLowerCase().includes(query)) {
+        topResult = { type: "album", item };
+      }
+    } else if (item.type === "track") {
+      tracks.push(item);
+      if (!topResult && item.title.toLowerCase().includes(query)) {
+        topResult = { type: "track", item };
+      }
+    }
 
     // data.forEach((item) => {
     //   if (item.type === "artist" && item.name.toLowerCase() === query) {
@@ -119,31 +119,36 @@ const searchContent = async () => {
     //   }
     // });
 
-    for (const item of data) {
-      switch (item.type) {
-        case "artist":
-          if (item.name.toLowerCase() === query) {
-            topResult = { type: "artist", item };
-          }
-          artists.push(item);
-          break;
-        case "album":
-          if (item.title.toLowerCase() === query) {
-            topResult = { type: "album", item };
-          }
-          albums.push(item);
-          break;
-        case "track":
-          if (item.title.toLowerCase() === query) {
-            topResult = { type: "track", item };
-          }
-          tracks.push(item);
-          break;
-        default:
-          break;
-      }
-    }
+    // for (const item of data) {
+    //   switch (item.type) {
+    //     case "artist":
+    //       if (item.name.toLowerCase() === query) {
+    //         topResult = { type: "artist", item };
+    //       }
+    //       artists.push(item);
+    //       break;
+    //     case "album":
+    //       if (item.title.toLowerCase() === query) {
+    //         topResult = { type: "album", item };
+    //       }
+    //       albums.push(item);
+    //       break;
+    //     case "track":
+    //       if (item.title.toLowerCase() === query) {
+    //         topResult = { type: "track", item };
+    //       }
+    //       tracks.push(item);
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
   });
+
+  // ordina i risultati per rilevanza]
+  artists = artists.sort((a, b) => a.name.localeCompare(b.name));
+  albums = albums.sort((a, b) => a.title.localeCompare(b.title));
+  tracks = tracks.sort((a, b) => a.title.localeCompare(b.title));
 
   let htmlContent = "";
 
@@ -191,5 +196,5 @@ searchInput.addEventListener("keyup", () => {
   clearTimeout(debounceTimeout);
   debounceTimeout = setTimeout(() => {
     searchContent();
-  }, 300); // Ritardo di 300ms
+  }, 150); // Ritardo di 150ms
 });
