@@ -100,7 +100,7 @@ a:hover{
     text-decoration: underline;
 }
 
-:where(#artist-card , #album-card, #song-card):hover {
+:where(#artist-card, #song-card):hover {
   background-color: rgb(14, 14, 14);
 }
 
