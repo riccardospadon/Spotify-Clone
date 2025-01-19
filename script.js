@@ -1,10 +1,6 @@
 const contenuto = document.querySelector(".album-song-artist");
 const searchInput = document.querySelector("#searchInput");
 
-// gli endpoint devono essere 2:
-// https://deezerdevs-deezer.p.rapidapi.com/search?q=${query}
-// https://deezerdevs-deezer.p.rapidapi.com/artist/search?q=${query}
-
 const options = {
 	method: 'GET',
 	headers: {
@@ -24,6 +20,19 @@ const getResult = async (query) => {
     return null
   }
 };
+
+const getArtist = async (query) => {
+  try {
+    const response = await fetch(`https://deezerdevs-deezer.p.rapidapi.com/artist/search?q=${query}`, options);
+    if(!response.ok){
+      throw new Error(`Errore API: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Errore nella richiesta", err);
+    return null
+  }
+}
 
 // creazione card in base alla ricerca:
 
@@ -54,43 +63,48 @@ const createSongCard = (song) => {
 };
 
 
-const displayResult = (data) => {
+const displayResult = (artists, tracks) => {
   let htmlContent = "";
-  let topResult = null;
-  const artists = [];
-  const albums = [];
-  const tracks = [];
+  // let topResult = null;
+  // const artists = [];
+  // const tracks = [];
 
-  data.forEach((item) => {
-    if (item.type === "artist") {
-      artists.push(item);
-      if (!topResult && item.name.toLowerCase().includes(searchInput.value.toLowerCase())) {
-        topResult = { type: "artist", item };
-      }
-    } else if (item.type === "album") {
-      albums.push(item);
-      if (!topResult && item.title.toLowerCase().includes(searchInput.value.toLowerCase())) {
-        topResult = { type: "album", item };
-      }
-    } else if (item.type === "track") {
-      tracks.push(item);
-      if (!topResult && item.title.toLowerCase().includes(searchInput.value.toLowerCase())) {
-        topResult = { type: "track", item };
-      }
-    }
-  });
+  // data.forEach((item) => {
+  //   if (item.type === "artist") {
+  //     artists.push(item);
+  //     if (!topResult && item.name.toLowerCase().includes(searchInput.value.toLowerCase())) {
+  //       topResult = { type: "artist", item };
+  //     }
+  //   } else if (item.type === "track") {
+  //     tracks.push(item);
+  //     if (!topResult && item.title.toLowerCase().includes(searchInput.value.toLowerCase())) {
+  //       topResult = { type: "track", item };
+  //     }
+  //   }
+  // });
 
-  if (topResult) {
-    if (topResult.type === "artist") htmlContent += createArtistCard(topResult.item);
-    if (topResult.type === "album") htmlContent += createAlbumCard(topResult.item);
-    if (topResult.type === "track") htmlContent += createSongCard(topResult.item);
+  // if (topResult) {
+  //   if (topResult.type === "artist") htmlContent += createArtistCard(topResult.item);
+  //   if (topResult.type === "album") htmlContent += createAlbumCard(topResult.item);
+  //   if (topResult.type === "track") htmlContent += createSongCard(topResult.item);
+  // }
+
+  // artists.forEach((artist) => (htmlContent += createArtistCard(artist)));
+  // tracks.forEach((track) => (htmlContent += createSongCard(track)));
+
+  if(artists.length > 0) {
+    artists.forEach((artist) => {
+      htmlContent += createArtistCard(artist);
+    })
   }
 
-  artists.forEach((artist) => (htmlContent += createArtistCard(artist)));
-  albums.forEach((album) => (htmlContent += createAlbumCard(album)));
-  tracks.forEach((track) => (htmlContent += createSongCard(track)));
+  if(tracks.length > 0) {
+    tracks.forEach((track) => {
+      htmlContent += createSongCard(track);
+    })
+  }
 
-  contenuto.innerHTML = htmlContent;
+  contenuto.innerHTML = htmlContent || "<p>Nessun risultato trovato</p>";
 };
 
 
@@ -101,12 +115,33 @@ const searchContent = async () => {
     return;
   }
 
-  const result = await getResult(query);
-  if (result && result.data) {
-    displayResult(result.data);
-  } else {
-    contenuto.innerHTML = "<p>Errore nella ricerca. Riprova più tardi.</p>";
-  }
+  const [searchResults, artistResults] = await Promise.all([
+    getResult(query), getArtist(query)]);
+
+    // const allArtists = [
+    //   ...(artistResult && artistResult.data ? artistResult.data : []),
+    //   ...(searchResult && searchResult.data
+    //     ? searchResult.data.filter((item) => item.type === "artist") : [])
+    // ]
+
+    // if(searchResult && searchResult.data) {
+    //   const combinedData = [
+    //     ...allArtists,
+    //     ...searchResult.data.filter((item) => item.type === "track")
+    //   ]
+    //   displayResult(combinedData);
+    // } else {
+    //   contenuto.innerHTML = "<p>Errore nella ricerca. Riprova più tardi.</p>  ";
+    // }
+
+    const artists = artistResults && artistResults.data ? artistResults.data : [];
+    const tracks = searchResults && searchResults.data
+      ? searchResults.data.filter((item) => item.type === 'track') : [];
+
+    console.log('Artisti trovati:', artists);
+    console.log('Canzoni trovate:', tracks);
+
+    displayResult(artists, tracks);
 };
 
 
