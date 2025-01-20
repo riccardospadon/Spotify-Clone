@@ -134,9 +134,8 @@ const searchContent = async () => {
     //   contenuto.innerHTML = "<p>Errore nella ricerca. Riprova più tardi.</p>  ";
     // }
 
-    const artists = artistResults && artistResults.data ? artistResults.data : [];
-    const tracks = searchResults && searchResults.data
-      ? searchResults.data.filter((item) => item.type === 'track') : [];
+    const artists = artistResults && artistResults.data ? artistResults.data.filter((item) => item.type === 'artist'): [];
+    const tracks = searchResults && searchResults.data ? searchResults.data.filter((item) => item.type === 'track') : [];
 
     console.log('Artisti trovati:', artists);
     console.log('Canzoni trovate:', tracks);
