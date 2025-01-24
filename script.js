@@ -8,6 +8,36 @@ const options = {
 		'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com'
 	}
 };
+
+const getRandomData = async () => {
+  try{
+    const response = await fetch('https://deezerdevs-deezer.p.rapidapi.com/search?q=queen', options);
+    if(!response.ok){
+      throw new Error(`Errore API: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data.data
+  } catch(err) {
+    console.error('Errore nella richiesta', err);
+    return []
+  }
+}
+
+const selectRandomItems = (array, numItems) => {
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, numItems);
+}
+
+const loadRandomContent = async () => {
+  const randomData = await getRandomData();
+  if(randomData.length > 0) {
+    const randomItems = selectRandomItems(randomData, 8);
+    displayResult(randomItems)
+  } else {
+    contenuto.innerHTML = "<p>Errore nel caricamento...</p>";
+  }
+}
+
 const getResult = async (query) => {
   try {
     const response = await fetch(`https://deezerdevs-deezer.p.rapidapi.com/search?q=${query}`, options);
@@ -19,34 +49,6 @@ const getResult = async (query) => {
     console.error("Errore nella richiesta", err);
     return null
   }
-};
-
-const getArtist = async (query) => {
-  try {
-    const response = await fetch(`https://deezerdevs-deezer.p.rapidapi.com/artist/search?q=${query}`, options);
-    if(!response.ok){
-      throw new Error(`Errore API: ${response.status} ${response.statusText}`);
-    }
-    return await response.json();
-  } catch (err) {
-    console.error("Errore nella richiesta", err);
-    return null
-  }
-}
-
-// creazione card in base alla ricerca:
-
-// card artista
-const createArtistCard = (artist) => {
-  return /*html*/ `
-      <div class="card col-md-2 p-3 align-items-center" id="artist-card">
-        <img src="${artist.picture_medium}" class="card-img-top rounded-circle" alt="${artist.name}">
-        <div class="card-body text-center">
-            <a href="../artist/artist.html?id=${artist.id}"><h6 class="card-title">${artist.name}</h6></a>
-            <p class="card-text">${artist.type}</p>
-        </div>
-      </div>
-    `;
 };
 
 // card canzoni
@@ -63,50 +65,22 @@ const createSongCard = (song) => {
 };
 
 
-const displayResult = (artists, tracks) => {
+const displayResult = (data) => {
   let htmlContent = "";
-  // let topResult = null;
-  // const artists = [];
-  // const tracks = [];
+  const tracks = [];
 
-  // data.forEach((item) => {
-  //   if (item.type === "artist") {
-  //     artists.push(item);
-  //     if (!topResult && item.name.toLowerCase().includes(searchInput.value.toLowerCase())) {
-  //       topResult = { type: "artist", item };
-  //     }
-  //   } else if (item.type === "track") {
-  //     tracks.push(item);
-  //     if (!topResult && item.title.toLowerCase().includes(searchInput.value.toLowerCase())) {
-  //       topResult = { type: "track", item };
-  //     }
-  //   }
-  // });
+  data.forEach((item) => {
+    if(item.type === "track") {
+      tracks.push(item);
+    }
+  });
 
-  // if (topResult) {
-  //   if (topResult.type === "artist") htmlContent += createArtistCard(topResult.item);
-  //   if (topResult.type === "album") htmlContent += createAlbumCard(topResult.item);
-  //   if (topResult.type === "track") htmlContent += createSongCard(topResult.item);
-  // }
-
-  // artists.forEach((artist) => (htmlContent += createArtistCard(artist)));
-  // tracks.forEach((track) => (htmlContent += createSongCard(track)));
-
-  if(artists.length > 0) {
-    artists.forEach((artist) => {
-      htmlContent += createArtistCard(artist);
-    })
-  }
-
-  if(tracks.length > 0) {
-    tracks.forEach((track) => {
-      htmlContent += createSongCard(track);
-    })
-  }
+  tracks.forEach((track) => (htmlContent += createSongCard(track)));
 
   contenuto.innerHTML = htmlContent || "<p>Nessun risultato trovato</p>";
 };
 
+document.addEventListener("DOMContentLoaded", loadRandomContent)
 
 const searchContent = async () => {
   const query = searchInput.value.trim().toLowerCase();
@@ -115,32 +89,12 @@ const searchContent = async () => {
     return;
   }
 
-  const [searchResults, artistResults] = await Promise.all([
-    getResult(query), getArtist(query)]);
-
-    // const allArtists = [
-    //   ...(artistResult && artistResult.data ? artistResult.data : []),
-    //   ...(searchResult && searchResult.data
-    //     ? searchResult.data.filter((item) => item.type === "artist") : [])
-    // ]
-
-    // if(searchResult && searchResult.data) {
-    //   const combinedData = [
-    //     ...allArtists,
-    //     ...searchResult.data.filter((item) => item.type === "track")
-    //   ]
-    //   displayResult(combinedData);
-    // } else {
-    //   contenuto.innerHTML = "<p>Errore nella ricerca. Riprova più tardi.</p>  ";
-    // }
-
-    const artists = artistResults && artistResults.data ? artistResults.data.filter((item) => item.type === 'artist'): [];
-    const tracks = searchResults && searchResults.data ? searchResults.data.filter((item) => item.type === 'track') : [];
-
-    console.log('Artisti trovati:', artists);
-    console.log('Canzoni trovate:', tracks);
-
-    displayResult(artists, tracks);
+  const result = await getResult(query);
+  if(result && result.data) {
+    displayResult(result.data)
+  } else {
+    contenuto.innerHTML = "<p>Nessun risultato trovato</p>";
+  }
 };
 
 
