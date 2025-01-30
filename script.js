@@ -106,3 +106,25 @@ searchInput.addEventListener("keyup", () => {
     searchContent();
   }, 150); // Ritardo di 150ms
 });
+
+document.querySelector(".play-pause").addEventListener('click', function(){
+  const icon = this.querySelector('i');
+  if(icon.classList.contains('bi-play-fill')){
+    icon.classList.remove('bi-play-fill');
+    icon.classList.add('bi-pause-fill');
+  } else {
+    icon.classList.remove('bi-pause-fill');
+    icon.classList.add('bi-play-fill');
+  }
+})
+
+document.querySelector(".unmute-mute").addEventListener('click', function(){
+  const icon = this.querySelector('i');
+  if(icon.classList.contains('bi-volume-up-fill')){
+    icon.classList.remove('bi-volume-up-fill');
+    icon.classList.add('bi-volume-mute-fill');
+  } else {
+    icon.classList.remove('bi-volume-mute-fill');
+    icon.classList.add('bi-volume-up-fill');
+  }
+})
