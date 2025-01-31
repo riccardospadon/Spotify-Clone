@@ -158,9 +158,10 @@ a:hover{
 footer{
   background-color: #181818;
   color: #fff;
-  padding: 10px 20px;
+  padding: 15px 20px;
+  position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 97%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -170,22 +171,23 @@ footer{
 
 .music-control {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  width: 100%;
 }
 
 .track-info {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
 }
 
 .track-cover {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 5px;
   object-fit: cover;
+  margin-right: 10px;
 }
 
 .track-details {
@@ -206,15 +208,17 @@ footer{
 
 .player-controls {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   align-items: center;
+  flex: 1;
+  justify-content: center;
 }
 
 .btn-control {
   background: transparent;
   border: none;
   color: #fff;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
 }
 
@@ -223,18 +227,24 @@ footer{
 }
 
 .play-pause{
-  font-size: 30px;
+  font-size: 36px;
+}
+
+.unmute-mute {
+  font-size: 24px;
 }
 
 .volume-controls {
   display: flex;
   gap: 10px;
   align-items: center;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 .volume-slider {
   appearance: none;
-  width: 100px;
+  width: 120px;
   background: #333;
   height: 4px;
   border-radius: 2px;
